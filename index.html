@@ -5,10 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kusuma Invitation</title>
     
-    <!-- SDK Firebase Versi Kompatibel -->
+    <!-- SDK Firebase -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -29,17 +32,15 @@
         section {
             height: 100vh; width: 100%; scroll-snap-align: start;
             position: relative; display: flex; justify-content: center; align-items: center; text-align: center;
+            overflow: hidden;
         }
 
         video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
 
-        .content { position: relative; z-index: 3; padding: 20px; width: 100%; text-shadow: 2px 2px 8px rgba(0,0,0,0.9); }
+        .content { position: relative; z-index: 3; padding: 20px; width: 100%; }
 
-        /* Tombol Maps - Posisi diturunkan seimbang */
-        .content-raised {
-            align-self: flex-end;
-            margin-bottom: 180px; 
-        }
+        /* No Shadow untuk Teks */
+        .no-shadow { text-shadow: none !important; color: white; }
 
         .btn {
             background: #d4af37; color: white; padding: 12px 25px;
@@ -48,32 +49,35 @@
             margin-top: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.4);
         }
 
-        /* Countdown Putih */
+        /* Wedding Gift Box */
+        .gift-container {
+            display: flex; flex-direction: column; gap: 15px; align-items: center;
+        }
+        .gift-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px; border-radius: 15px; width: 280px;
+            color: #333; cursor: pointer; transition: transform 0.2s;
+            border: 2px solid #d4af37;
+        }
+        .gift-card:active { transform: scale(0.95); }
+        .bank-logo { height: 30px; margin-bottom: 10px; display: block; margin-left: auto; margin-right: auto; }
+        .rekening { font-size: 1.2rem; font-weight: bold; letter-spacing: 1px; display: block; margin: 5px 0; }
+        .salin-hint { font-size: 0.7rem; color: #d4af37; font-weight: bold; }
+
+        /* Countdown & Buku Tamu tetap ada */
         .countdown { display: flex; justify-content: center; gap: 10px; margin: 20px 0; color: #ffffff; }
         .countdown-item {
             background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(5px);
             padding: 10px; border-radius: 10px; min-width: 65px; border: 1px solid rgba(255,255,255,0.3);
         }
-        .countdown-item span { display: block; font-size: 1.6rem; font-weight: bold; }
-
-        #namaTamu { font-size: 2.2rem; color: #f1c40f; margin-top: 10px; }
-
-        /* Buku Tamu Real-time */
+        .guestbook-wrapper { display: flex; flex-direction: column; height: 75vh; gap: 10px; width: 100%; }
         .comment-box {
             background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);
-            padding: 15px; border-radius: 15px; margin-top: 20px;
-            max-height: 250px; overflow-y: auto; text-align: left;
+            padding: 15px; border-radius: 15px; flex-grow: 1; overflow-y: auto; text-align: left;
         }
-        .comment-item {
-            background: rgba(255, 255, 255, 0.9); color: #333;
-            padding: 10px; border-radius: 8px; margin-bottom: 10px; font-size: 0.85rem;
-        }
-        .comment-item b { color: #4b0082; display: block; margin-bottom: 2px; }
-
-        input, textarea, select {
-            width: 100%; padding: 10px; margin: 5px 0;
-            border-radius: 8px; border: none; background: rgba(255,255,255,0.9);
-        }
+        .comment-item { background: rgba(255, 255, 255, 0.9); color: #333; padding: 10px; border-radius: 8px; margin-bottom: 10px; position: relative; }
+        .btn-delete { position: absolute; top: 5px; right: 8px; color: #ff4d4d; cursor: pointer; border: none; background: none; font-weight: bold; }
+        textarea, select { width: 100%; padding: 10px; margin: 5px 0; border-radius: 8px; border: none; }
 
         #halaman1 { background: linear-gradient(135deg, #4b0082, #8a2be2); z-index: 10; }
     </style>
@@ -84,69 +88,86 @@
 
 <div class="container" id="mainContainer">
     
-    <!-- HALAMAN 1 -->
+    <!-- Halaman 1 -->
     <section id="halaman1">
-        <div class="content">
-            <h1 style="color: white;">Kusuma & Partner</h1>
+        <div class="content animate__animated animate__fadeIn">
+            <h1 class="no-shadow">Puji & Trimono, S.M</h1>
             <div class="countdown">
                 <div class="countdown-item"><span id="days">00</span><label>Hari</label></div>
                 <div class="countdown-item"><span id="hours">00</span><label>Jam</label></div>
                 <div class="countdown-item"><span id="minutes">00</span><label>Menit</label></div>
                 <div class="countdown-item"><span id="seconds">00</span><label>Detik</label></div>
             </div>
-            <button class="btn" onclick="mulaiUndangan()">BUKA UNDANGAN</button>
+            <button class="btn animate__animated animate__infinite animate__pulse" onclick="mulaiUndangan()">BUKA UNDANGAN</button>
         </div>
     </section>
 
-    <!-- HALAMAN 2 -->
+    <!-- Halaman 2: Nama Tamu -->
     <section>
-        <video loop playsinline muted preload="auto" class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%202.mp4" type="video/mp4"></video>
-        <div class="content"><p style="color:white">Kepada Yth:</p><h2 id="namaTamu">Nama Tamu</h2></div>
-    </section>
-
-    <!-- HALAMAN 3-4 -->
-    <section><video loop playsinline muted preload="auto" class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%203.mp4" type="video/mp4"></video></section>
-    <section><video loop playsinline muted preload="auto" class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%204.mp4" type="video/mp4"></video></section>
-
-    <!-- HALAMAN 5 - Lokasi -->
-    <section>
-        <video loop playsinline muted preload="auto" class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%205.mp4" type="video/mp4"></video>
-        <div class="content content-raised">
-            <a href="https://maps.google.com/maps?q=-7.4653138%2C111.4087301&z=17&hl=en" target="_blank" class="btn">LIHAT DI GOOGLE MAPS</a>
+        <video loop playsinline muted class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%202.mp4" type="video/mp4"></video>
+        <div class="content animate__animated animate__zoomIn">
+            <p class="no-shadow">Kepada Yth:</p>
+            <h2 id="namaTamu" class="no-shadow" style="color: #f1c40f; font-size: 2.2rem;">Nama Tamu</h2>
         </div>
     </section>
 
-    <!-- HALAMAN 6-7 -->
-    <section><video loop playsinline muted preload="auto" class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%206.mp4" type="video/mp4"></video></section>
-    <section><video loop playsinline muted preload="auto" class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%207.mp4" type="video/mp4"></video></section>
-
-    <!-- HALAMAN 8 - Buku Tamu Real-time -->
+    <!-- Halaman 3 - 7 (Gallery & Lokasi) -->
+    <section><video loop playsinline muted class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%203.mp4" type="video/mp4"></video></section>
+    <section><video loop playsinline muted class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%204.mp4" type="video/mp4"></video></section>
     <section>
-        <video loop playsinline muted preload="auto" class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%208.mp4" type="video/mp4"></video>
+        <video loop playsinline muted class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%205.mp4" type="video/mp4"></video>
+        <div class="content" style="align-self: flex-end; margin-bottom: 150px;">
+            <a href="https://maps.google.com/maps?q=-7.4653138%2C111.4087301&z=17&hl=en" target="_blank" class="btn animate__animated animate__bounceIn">LIHAT DI GOOGLE MAPS</a>
+        </div>
+    </section>
+    <section><video loop playsinline muted class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%206.mp4" type="video/mp4"></video></section>
+    <section><video loop playsinline muted class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%207.mp4" type="video/mp4"></video></section>
+
+    <!-- Halaman 8: Buku Tamu -->
+    <section>
+        <video loop playsinline muted class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%208.mp4" type="video/mp4"></video>
         <div class="content">
-            <h3 style="color:white">Buku Tamu</h3>
-            <p style="color:white">Halo, <b id="displayNamaUser">Tamu</b></p>
-            <select id="statusHadir">
-                <option value="Hadir">Hadir</option>
-                <option value="Tidak Hadir">Tidak Hadir</option>
-            </select>
-            <textarea id="ucapan" placeholder="Berikan ucapan doa restu..."></textarea>
-            <button class="btn" onclick="simpanKomentar()">KIRIM UCAPAN</button>
-
-            <div class="comment-box" id="listKomentar">
-                <!-- List ucapan tamu muncul di sini -->
+            <div class="guestbook-wrapper animate__animated animate__fadeInUp">
+                <div style="background: rgba(0,0,0,0.6); padding: 15px; border-radius: 15px;">
+                    <h3 class="no-shadow">Buku Tamu</h3>
+                    <select id="statusHadir"><option value="Hadir">Hadir</option><option value="Tidak Hadir">Tidak Hadir</option></select>
+                    <textarea id="ucapan" placeholder="Tulis doa restu..."></textarea>
+                    <button class="btn" onclick="simpanKomentar()">KIRIM</button>
+                </div>
+                <div class="comment-box" id="listKomentar"></div>
             </div>
         </div>
     </section>
 
-    <!-- HALAMAN 9-10 -->
-    <section><video loop playsinline muted preload="auto" class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%209.mp4" type="video/mp4"></video></section>
-    <section><video loop playsinline muted preload="auto" class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%2010.mp4" type="video/mp4"></video></section>
+    <!-- Halaman 9: Wedding Gift (Klik Nomor untuk Salin) -->
+    <section>
+        <video loop playsinline muted class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%209.mp4" type="video/mp4"></video>
+        <div class="content gift-container animate__animated animate__fadeIn">
+            <!-- BRI Card -->
+            <div class="gift-card" onclick="copyToClipboard('0021234567890', 'BRI')">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/BRI_Logo.svg/1200px-BRI_Logo.svg.png" class="bank-logo" alt="BRI">
+                <span class="rekening">0021234567890</span>
+                <p>a/n Trimono</p>
+                <span class="salin-hint">Klik untuk salin nomor</span>
+            </div>
+
+            <!-- BCA Card -->
+            <div class="gift-card" onclick="copyToClipboard('8221234567', 'BCA')">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Bank_Central_Asia.svg/1200px-Bank_Central_Asia.svg.png" class="bank-logo" alt="BCA">
+                <span class="rekening">8221234567</span>
+                <p>a/n Puji Rahayu</p>
+                <span class="salin-hint">Klik untuk salin nomor</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Halaman 10: Closing -->
+    <section><video loop playsinline muted class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%2010.mp4" type="video/mp4"></video></section>
 
 </div>
 
 <script>
-    // 1. Inisialisasi Firebase dengan Config Kamu
+    // Firebase Config (Data Anda)
     const firebaseConfig = {
         apiKey: "AIzaSyAZWfcVAeChQxDY4eKIyJd_CfTE3MV2rGE",
         authDomain: "kusuma-invitation.firebaseapp.com",
@@ -161,77 +182,68 @@
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
 
-    // 2. Ambil Nama Tamu dari URL
+    // Fungsi Salin Rekening
+    function copyToClipboard(number, bank) {
+        navigator.clipboard.writeText(number).then(() => {
+            alert("Nomor Rekening " + bank + " berhasil disalin!");
+        });
+    }
+
+    // Ambil Nama Tamu
     const urlParams = new URLSearchParams(window.location.search);
     const namaTamu = urlParams.get('to') || "Tamu Undangan";
     document.getElementById('namaTamu').innerText = namaTamu;
-    document.getElementById('displayNamaUser').innerText = namaTamu;
 
-    // 3. Simpan Ucapan ke Firebase
+    // Logika Firebase Buku Tamu
     function simpanKomentar() {
         const status = document.getElementById('statusHadir').value;
         const pesan = document.getElementById('ucapan').value;
-
-        if(!pesan) return alert("Silakan isi ucapan terlebih dahulu.");
-
-        database.ref('komentar').push({
-            nama: namaTamu,
-            status: status,
-            ucapan: pesan,
-            waktu: new Date().toLocaleString('id-ID')
-        });
-
+        if(!pesan) return alert("Isi ucapan dulu!");
+        database.ref('komentar').push({ nama: namaTamu, status: status, ucapan: pesan });
         document.getElementById('ucapan').value = "";
     }
 
-    // 4. Tampilkan Ucapan Secara Real-time
     database.ref('komentar').on('value', (snapshot) => {
         const list = document.getElementById('listKomentar');
         list.innerHTML = "";
         snapshot.forEach((child) => {
             const data = child.val();
-            list.innerHTML += `
-                <div class="comment-item">
-                    <b>${data.nama} <small>(${data.status})</small></b>
-                    ${data.ucapan}
-                </div>
-            `;
+            list.innerHTML += `<div class="comment-item animate__animated animate__fadeInLeft">
+                <button class="btn-delete" onclick="hapusKomentar('${child.key}')">X</button>
+                <b>${data.nama} (${data.status})</b><br>${data.ucapan}</div>`;
         });
         list.scrollTop = list.scrollHeight;
     });
 
-    // 5. Logika Navigasi & Video
+    function hapusKomentar(id) { if(confirm("Hapus ucapan?")) database.ref('komentar/' + id).remove(); }
+
+    // Navigasi & Audio
     const container = document.getElementById('mainContainer');
-    const videos = document.querySelectorAll('.bg-vid');
     const audio = document.getElementById('musikLatar');
-    
     container.style.overflowY = 'hidden';
 
     function mulaiUndangan() {
         container.style.overflowY = 'scroll';
-        audio.play().catch(e => console.log(e));
+        audio.play();
         container.children[1].scrollIntoView({ behavior: 'smooth' });
     }
 
     container.addEventListener('scroll', () => {
-        videos.forEach(v => {
+        document.querySelectorAll('.bg-vid').forEach(v => {
             const pos = v.getBoundingClientRect();
-            if(pos.top < window.innerHeight && pos.bottom > 0) v.play();
-            else v.pause();
+            if(pos.top < window.innerHeight && pos.bottom > 0) v.play(); else v.pause();
         });
     });
 
-    // 6. Countdown
+    // Countdown
     const weddingDate = new Date("May 28, 2026 09:00:00").getTime();
     setInterval(() => {
-        const now = new Date().getTime();
-        const d = weddingDate - now;
+        const d = weddingDate - new Date().getTime();
         document.getElementById("days").innerHTML = Math.floor(d / (1000 * 60 * 60 * 24));
         document.getElementById("hours").innerHTML = Math.floor((d % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         document.getElementById("minutes").innerHTML = Math.floor((d % (1000 * 60 * 60)) / (1000 * 60));
         document.getElementById("seconds").innerHTML = Math.floor((d % (1000 * 60)) / 1000);
     }, 1000);
 </script>
-
 </body>
 </html>
