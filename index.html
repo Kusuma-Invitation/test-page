@@ -62,10 +62,10 @@
             text-shadow: 1px 1px 5px rgba(0,0,0,0.7); 
         }
 
-        /* Posisi khusus untuk konten yang ingin diturunkan (Halaman 5) */
-        .content-bottom {
+        /* Tombol Maps dinaikkan jauh lebih tinggi */
+        .content-raised {
             align-self: flex-end;
-            margin-bottom: 50px;
+            margin-bottom: 250px; 
         }
 
         .btn {
@@ -81,28 +81,20 @@
             justify-content: center;
             gap: 10px;
             margin: 20px 0;
+            color: #ffffff;
         }
         .countdown-item {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(5px);
             padding: 10px;
             border-radius: 10px;
-            min-width: 60px;
+            min-width: 65px;
+            border: 1px solid rgba(255,255,255,0.3);
         }
-        .countdown-item span { display: block; font-size: 1.5rem; font-weight: bold; }
+        .countdown-item span { display: block; font-size: 1.6rem; font-weight: bold; }
         .countdown-item label { font-size: 0.7rem; text-transform: uppercase; }
 
         #namaTamu { font-size: 2.2rem; color: #f1c40f; margin-top: 10px; }
-
-        /* Style Peta */
-        .map-wrapper {
-            width: 100%;
-            height: 200px;
-            border-radius: 15px;
-            overflow: hidden;
-            border: 2px solid rgba(255,255,255,0.3);
-            margin-top: 15px;
-        }
 
         input, textarea, select {
             width: 100%; padding: 10px; margin: 5px 0;
@@ -116,7 +108,10 @@
             margin-top: 10px;
         }
 
-        #halaman1 { background: #111; z-index: 10; }
+        #halaman1 { 
+            background: linear-gradient(135deg, #4b0082, #8a2be2); 
+            z-index: 10; 
+        }
     </style>
 </head>
 <body>
@@ -125,11 +120,11 @@
 
 <div class="container" id="mainContainer">
     
-    <!-- HALAMAN 1: PEMBUKA + COUNTDOWN -->
+    <!-- HALAMAN 1 -->
     <section id="halaman1">
         <div class="content">
-            <h1 style="margin-bottom: 10px;">Puji & Trimono</h1>
-            <p>Akan segera dimulai dalam:</p>
+            <h1 style="color: white; margin-bottom: 5px;">Kusuma & Partner</h1>
+            <p style="color: rgba(255,255,255,0.9);">Kami menantikan kehadiran Anda dalam:</p>
             <div class="countdown">
                 <div class="countdown-item"><span id="days">00</span><label>Hari</label></div>
                 <div class="countdown-item"><span id="hours">00</span><label>Jam</label></div>
@@ -146,22 +141,17 @@
         <div class="content"><p>Kepada Yth:</p><h2 id="namaTamu">Nama Tamu</h2></div>
     </section>
 
-    <!-- HALAMAN 3-4 -->
     <section><video loop playsinline muted class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%203.mp4" type="video/mp4"></video></section>
     <section><video loop playsinline muted class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%204.mp4" type="video/mp4"></video></section>
 
-    <!-- HALAMAN 5: MAPS (DITURUNKAN) -->
+    <!-- HALAMAN 5: LOKASI (POSISI NAIK LAGI) -->
     <section>
         <video loop playsinline muted class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%205.mp4" type="video/mp4"></video>
-        <div class="content content-bottom">
-            <div class="map-wrapper">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3954.9142278065485!2d111.4087301!3d-7.4653138!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zN8KwMjcnNTUuMSJTIDExMcKwMjQnMzEuNCJF!5e0!3m2!1sen!2sid!4v1714460000000!5m2!1sen!2sid" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-            </div>
-            <a href="https://maps.google.com/maps?q=-7.4653138%2C111.4087301&z=17&hl=en" target="_blank" class="btn">BUKA GOOGLE MAPS</a>
+        <div class="content content-raised">
+            <a href="https://maps.google.com/maps?q=-7.4653138%2C111.4087301&z=17&hl=en" target="_blank" class="btn">LIHAT DI GOOGLE MAPS</a>
         </div>
     </section>
 
-    <!-- HALAMAN 6-7 -->
     <section><video loop playsinline muted class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%206.mp4" type="video/mp4"></video></section>
     <section><video loop playsinline muted class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%207.mp4" type="video/mp4"></video></section>
 
@@ -202,7 +192,6 @@
 </div>
 
 <script>
-    // Update Tanggal Countdown ke 28 Mei 2026
     const weddingDate = new Date("May 28, 2026 09:00:00").getTime();
 
     const countdownFunc = setInterval(function() {
@@ -221,7 +210,7 @@
 
         if (distance < 0) {
             clearInterval(countdownFunc);
-            document.querySelector(".countdown").innerHTML = "ACARA SEDANG BERLANGSUNG";
+            document.querySelector(".countdown").innerHTML = "HARI BAHAGIA TELAH TIBA";
         }
     }, 1000);
 
@@ -252,7 +241,7 @@
     function copyRek() {
         const rek = document.getElementById('noRek').innerText;
         navigator.clipboard.writeText(rek);
-        alert("Nomor rekening berhasil disalin!");
+        alert("Nomor rekening disalin!");
     }
 
     function kirimRSVP() {
