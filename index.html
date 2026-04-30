@@ -4,114 +4,78 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kusuma Invitation</title>
+    
+    <!-- SDK Firebase Versi Kompatibel -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body { 
             background-color: #1a1a1a; 
-            background-image: url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1350&q=80'); 
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            font-family: 'Arial', sans-serif;
-            overflow: hidden;
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; font-family: 'Arial', sans-serif; overflow: hidden;
         }
 
         .container {
-            width: 100%;
-            max-width: 450px;
-            height: 100vh;
-            background: #000;
-            overflow-y: scroll;
-            scroll-snap-type: y mandatory;
-            scroll-behavior: smooth;
-            position: relative;
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
-            z-index: 5;
+            width: 100%; max-width: 450px; height: 100vh;
+            background: #000; overflow-y: scroll;
+            scroll-snap-type: y mandatory; scroll-behavior: smooth;
+            position: relative; box-shadow: 0 0 50px rgba(0,0,0,0.8); z-index: 5;
         }
-
         .container::-webkit-scrollbar { display: none; }
 
         section {
-            height: 100vh;
-            width: 100%;
-            scroll-snap-align: start;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
+            height: 100vh; width: 100%; scroll-snap-align: start;
+            position: relative; display: flex; justify-content: center; align-items: center; text-align: center;
         }
 
-        video {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover;
-            z-index: 1;
-        }
+        video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
 
-        .content { 
-            position: relative; 
-            z-index: 3; 
-            padding: 20px; 
-            width: 100%;
-            text-shadow: 1px 1px 5px rgba(0,0,0,0.7); 
-        }
+        .content { position: relative; z-index: 3; padding: 20px; width: 100%; text-shadow: 2px 2px 8px rgba(0,0,0,0.9); }
 
-        /* Tombol Maps dinaikkan jauh lebih tinggi */
+        /* Tombol Maps - Posisi diturunkan seimbang */
         .content-raised {
             align-self: flex-end;
-            margin-bottom: 250px; 
+            margin-bottom: 180px; 
         }
 
         .btn {
             background: #d4af37; color: white; padding: 12px 25px;
             border: none; border-radius: 50px; cursor: pointer;
             font-weight: bold; text-decoration: none; display: inline-block;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            margin-top: 15px;
+            margin-top: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.4);
         }
 
-        .countdown {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin: 20px 0;
-            color: #ffffff;
-        }
+        /* Countdown Putih */
+        .countdown { display: flex; justify-content: center; gap: 10px; margin: 20px 0; color: #ffffff; }
         .countdown-item {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(5px);
-            padding: 10px;
-            border-radius: 10px;
-            min-width: 65px;
-            border: 1px solid rgba(255,255,255,0.3);
+            background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(5px);
+            padding: 10px; border-radius: 10px; min-width: 65px; border: 1px solid rgba(255,255,255,0.3);
         }
         .countdown-item span { display: block; font-size: 1.6rem; font-weight: bold; }
-        .countdown-item label { font-size: 0.7rem; text-transform: uppercase; }
 
         #namaTamu { font-size: 2.2rem; color: #f1c40f; margin-top: 10px; }
+
+        /* Buku Tamu Real-time */
+        .comment-box {
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);
+            padding: 15px; border-radius: 15px; margin-top: 20px;
+            max-height: 250px; overflow-y: auto; text-align: left;
+        }
+        .comment-item {
+            background: rgba(255, 255, 255, 0.9); color: #333;
+            padding: 10px; border-radius: 8px; margin-bottom: 10px; font-size: 0.85rem;
+        }
+        .comment-item b { color: #4b0082; display: block; margin-bottom: 2px; }
 
         input, textarea, select {
             width: 100%; padding: 10px; margin: 5px 0;
             border-radius: 8px; border: none; background: rgba(255,255,255,0.9);
         }
 
-        .bank-card {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.3);
-            margin-top: 10px;
-        }
-
-        #halaman1 { 
-            background: linear-gradient(135deg, #4b0082, #8a2be2); 
-            z-index: 10; 
-        }
+        #halaman1 { background: linear-gradient(135deg, #4b0082, #8a2be2); z-index: 10; }
     </style>
 </head>
 <body>
@@ -123,8 +87,7 @@
     <!-- HALAMAN 1 -->
     <section id="halaman1">
         <div class="content">
-            <h1 style="color: white; margin-bottom: 5px;">Kusuma & Partner</h1>
-            <p style="color: rgba(255,255,255,0.9);">Kami menantikan kehadiran Anda dalam:</p>
+            <h1 style="color: white;">Kusuma & Partner</h1>
             <div class="countdown">
                 <div class="countdown-item"><span id="days">00</span><label>Hari</label></div>
                 <div class="countdown-item"><span id="hours">00</span><label>Jam</label></div>
@@ -137,121 +100,137 @@
 
     <!-- HALAMAN 2 -->
     <section>
-        <video loop playsinline muted class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%202.mp4" type="video/mp4"></video>
-        <div class="content"><p>Kepada Yth:</p><h2 id="namaTamu">Nama Tamu</h2></div>
+        <video loop playsinline muted preload="auto" class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%202.mp4" type="video/mp4"></video>
+        <div class="content"><p style="color:white">Kepada Yth:</p><h2 id="namaTamu">Nama Tamu</h2></div>
     </section>
 
-    <section><video loop playsinline muted class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%203.mp4" type="video/mp4"></video></section>
-    <section><video loop playsinline muted class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%204.mp4" type="video/mp4"></video></section>
+    <!-- HALAMAN 3-4 -->
+    <section><video loop playsinline muted preload="auto" class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%203.mp4" type="video/mp4"></video></section>
+    <section><video loop playsinline muted preload="auto" class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%204.mp4" type="video/mp4"></video></section>
 
-    <!-- HALAMAN 5: LOKASI (POSISI NAIK LAGI) -->
+    <!-- HALAMAN 5 - Lokasi -->
     <section>
-        <video loop playsinline muted class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%205.mp4" type="video/mp4"></video>
+        <video loop playsinline muted preload="auto" class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%205.mp4" type="video/mp4"></video>
         <div class="content content-raised">
             <a href="https://maps.google.com/maps?q=-7.4653138%2C111.4087301&z=17&hl=en" target="_blank" class="btn">LIHAT DI GOOGLE MAPS</a>
         </div>
     </section>
 
-    <section><video loop playsinline muted class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%206.mp4" type="video/mp4"></video></section>
-    <section><video loop playsinline muted class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%207.mp4" type="video/mp4"></video></section>
+    <!-- HALAMAN 6-7 -->
+    <section><video loop playsinline muted preload="auto" class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%206.mp4" type="video/mp4"></video></section>
+    <section><video loop playsinline muted preload="auto" class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%207.mp4" type="video/mp4"></video></section>
 
-    <!-- HALAMAN 8 -->
+    <!-- HALAMAN 8 - Buku Tamu Real-time -->
     <section>
-        <video loop playsinline muted class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%208.mp4" type="video/mp4"></video>
+        <video loop playsinline muted preload="auto" class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%208.mp4" type="video/mp4"></video>
         <div class="content">
-            <h3>Konfirmasi Kehadiran</h3>
-            <input type="text" id="inputNama" placeholder="Nama Anda">
+            <h3 style="color:white">Buku Tamu</h3>
+            <p style="color:white">Halo, <b id="displayNamaUser">Tamu</b></p>
             <select id="statusHadir">
                 <option value="Hadir">Hadir</option>
                 <option value="Tidak Hadir">Tidak Hadir</option>
             </select>
-            <textarea id="ucapan" placeholder="Berikan ucapan..."></textarea>
-            <button class="btn" onclick="kirimRSVP()">KIRIM UCAPAN</button>
-        </div>
-    </section>
+            <textarea id="ucapan" placeholder="Berikan ucapan doa restu..."></textarea>
+            <button class="btn" onclick="simpanKomentar()">KIRIM UCAPAN</button>
 
-    <!-- HALAMAN 9 -->
-    <section>
-        <video loop playsinline muted class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%209.mp4" type="video/mp4"></video>
-        <div class="content">
-            <h3>Wedding Gift</h3>
-            <div class="bank-card">
-                <p>Bank BCA</p>
-                <p id="noRek">1234567890</p>
-                <p>a/n Kusuma</p>
-                <button class="btn" style="padding: 5px 15px; font-size: 0.8rem;" onclick="copyRek()">Salin Rekening</button>
+            <div class="comment-box" id="listKomentar">
+                <!-- List ucapan tamu muncul di sini -->
             </div>
         </div>
     </section>
 
-    <!-- HALAMAN 10 -->
-    <section>
-        <video loop playsinline muted class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%2010.mp4" type="video/mp4"></video>
-    </section>
+    <!-- HALAMAN 9-10 -->
+    <section><video loop playsinline muted preload="auto" class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%209.mp4" type="video/mp4"></video></section>
+    <section><video loop playsinline muted preload="auto" class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%2010.mp4" type="video/mp4"></video></section>
 
 </div>
 
 <script>
-    const weddingDate = new Date("May 28, 2026 09:00:00").getTime();
+    // 1. Inisialisasi Firebase dengan Config Kamu
+    const firebaseConfig = {
+        apiKey: "AIzaSyAZWfcVAeChQxDY4eKIyJd_CfTE3MV2rGE",
+        authDomain: "kusuma-invitation.firebaseapp.com",
+        databaseURL: "https://kusuma-invitation-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "kusuma-invitation",
+        storageBucket: "kusuma-invitation.firebasestorage.app",
+        messagingSenderId: "567655297410",
+        appId: "1:567655297410:web:62a89b0c286f542bff1f9b",
+        measurementId: "G-W7EKM2J61N"
+    };
 
-    const countdownFunc = setInterval(function() {
-        const now = new Date().getTime();
-        const distance = weddingDate - now;
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
 
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        document.getElementById("days").innerHTML = days;
-        document.getElementById("hours").innerHTML = hours;
-        document.getElementById("minutes").innerHTML = minutes;
-        document.getElementById("seconds").innerHTML = seconds;
-
-        if (distance < 0) {
-            clearInterval(countdownFunc);
-            document.querySelector(".countdown").innerHTML = "HARI BAHAGIA TELAH TIBA";
-        }
-    }, 1000);
-
+    // 2. Ambil Nama Tamu dari URL
     const urlParams = new URLSearchParams(window.location.search);
-    document.getElementById('namaTamu').innerText = urlParams.get('to') || "Tamu Undangan";
+    const namaTamu = urlParams.get('to') || "Tamu Undangan";
+    document.getElementById('namaTamu').innerText = namaTamu;
+    document.getElementById('displayNamaUser').innerText = namaTamu;
 
+    // 3. Simpan Ucapan ke Firebase
+    function simpanKomentar() {
+        const status = document.getElementById('statusHadir').value;
+        const pesan = document.getElementById('ucapan').value;
+
+        if(!pesan) return alert("Silakan isi ucapan terlebih dahulu.");
+
+        database.ref('komentar').push({
+            nama: namaTamu,
+            status: status,
+            ucapan: pesan,
+            waktu: new Date().toLocaleString('id-ID')
+        });
+
+        document.getElementById('ucapan').value = "";
+    }
+
+    // 4. Tampilkan Ucapan Secara Real-time
+    database.ref('komentar').on('value', (snapshot) => {
+        const list = document.getElementById('listKomentar');
+        list.innerHTML = "";
+        snapshot.forEach((child) => {
+            const data = child.val();
+            list.innerHTML += `
+                <div class="comment-item">
+                    <b>${data.nama} <small>(${data.status})</small></b>
+                    ${data.ucapan}
+                </div>
+            `;
+        });
+        list.scrollTop = list.scrollHeight;
+    });
+
+    // 5. Logika Navigasi & Video
     const container = document.getElementById('mainContainer');
     const videos = document.querySelectorAll('.bg-vid');
     const audio = document.getElementById('musikLatar');
-
+    
     container.style.overflowY = 'hidden';
 
     function mulaiUndangan() {
         container.style.overflowY = 'scroll';
         audio.play().catch(e => console.log(e));
         container.children[1].scrollIntoView({ behavior: 'smooth' });
-        checkVideos();
     }
 
-    function checkVideos() {
+    container.addEventListener('scroll', () => {
         videos.forEach(v => {
             const pos = v.getBoundingClientRect();
             if(pos.top < window.innerHeight && pos.bottom > 0) v.play();
             else v.pause();
         });
-    }
+    });
 
-    function copyRek() {
-        const rek = document.getElementById('noRek').innerText;
-        navigator.clipboard.writeText(rek);
-        alert("Nomor rekening disalin!");
-    }
-
-    function kirimRSVP() {
-        const nama = document.getElementById('inputNama').value;
-        const status = document.getElementById('statusHadir').value;
-        const pesan = document.getElementById('ucapan').value;
-        window.open(`https://wa.me/628123456789?text=Nama:+${nama}%0AHadir:+${status}%0APesan:+${pesan}`, '_blank');
-    }
-
-    container.addEventListener('scroll', checkVideos);
+    // 6. Countdown
+    const weddingDate = new Date("May 28, 2026 09:00:00").getTime();
+    setInterval(() => {
+        const now = new Date().getTime();
+        const d = weddingDate - now;
+        document.getElementById("days").innerHTML = Math.floor(d / (1000 * 60 * 60 * 24));
+        document.getElementById("hours").innerHTML = Math.floor((d % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        document.getElementById("minutes").innerHTML = Math.floor((d % (1000 * 60 * 60)) / (1000 * 60));
+        document.getElementById("seconds").innerHTML = Math.floor((d % (1000 * 60)) / 1000);
+    }, 1000);
 </script>
 
 </body>
