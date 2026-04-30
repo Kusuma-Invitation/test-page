@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kusuma Invitation</title>
     
+    <!-- Meta Tags untuk Preview WhatsApp (Open Graph) -->
+    <meta property="og:title" content="Undangan Pernikahan Kusuma & Partner">
+    <meta property="og:description" content="Tanpa mengurangi rasa hormat, kami mengundang Bapak/Ibu/Saudara/i untuk hadir di acara pernikahan kami.">
+    <meta property="og:image" content="https://github.com/Kusuma-Invitation/kusuma/blob/main/galeri1.jpg?raw=true">
+    <meta property="og:type" content="website">
+
     <!-- SDK Firebase -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
@@ -50,9 +56,7 @@
         }
 
         /* Wedding Gift Box */
-        .gift-container {
-            display: flex; flex-direction: column; gap: 15px; align-items: center;
-        }
+        .gift-container { display: flex; flex-direction: column; gap: 15px; align-items: center; }
         .gift-card {
             background: rgba(255, 255, 255, 0.95);
             padding: 20px; border-radius: 15px; width: 280px;
@@ -60,11 +64,10 @@
             border: 2px solid #d4af37;
         }
         .gift-card:active { transform: scale(0.95); }
-        .bank-logo { height: 30px; margin-bottom: 10px; display: block; margin-left: auto; margin-right: auto; }
+        .bank-logo { height: 40px; margin-bottom: 10px; display: block; margin-left: auto; margin-right: auto; object-fit: contain; }
         .rekening { font-size: 1.2rem; font-weight: bold; letter-spacing: 1px; display: block; margin: 5px 0; }
         .salin-hint { font-size: 0.7rem; color: #d4af37; font-weight: bold; }
 
-        /* Countdown & Buku Tamu tetap ada */
         .countdown { display: flex; justify-content: center; gap: 10px; margin: 20px 0; color: #ffffff; }
         .countdown-item {
             background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(5px);
@@ -88,10 +91,9 @@
 
 <div class="container" id="mainContainer">
     
-    <!-- Halaman 1 -->
     <section id="halaman1">
         <div class="content animate__animated animate__fadeIn">
-            <h1 class="no-shadow">Puji & Trimono, S.M</h1>
+            <h1 class="no-shadow">Puji Rahayu & Trimono</h1>
             <div class="countdown">
                 <div class="countdown-item"><span id="days">00</span><label>Hari</label></div>
                 <div class="countdown-item"><span id="hours">00</span><label>Jam</label></div>
@@ -102,7 +104,6 @@
         </div>
     </section>
 
-    <!-- Halaman 2: Nama Tamu -->
     <section>
         <video loop playsinline muted class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%202.mp4" type="video/mp4"></video>
         <div class="content animate__animated animate__zoomIn">
@@ -111,7 +112,7 @@
         </div>
     </section>
 
-    <!-- Halaman 3 - 7 (Gallery & Lokasi) -->
+    <!-- Halaman 3-7 -->
     <section><video loop playsinline muted class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%203.mp4" type="video/mp4"></video></section>
     <section><video loop playsinline muted class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%204.mp4" type="video/mp4"></video></section>
     <section>
@@ -139,21 +140,20 @@
         </div>
     </section>
 
-    <!-- Halaman 9: Wedding Gift (Klik Nomor untuk Salin) -->
+    <!-- Halaman 9: Wedding Gift (Logo Update) -->
     <section>
         <video loop playsinline muted class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%209.mp4" type="video/mp4"></video>
         <div class="content gift-container animate__animated animate__fadeIn">
-            <!-- BRI Card -->
+            <!-- BRI -->
             <div class="gift-card" onclick="copyToClipboard('0021234567890', 'BRI')">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/BRI_Logo.svg/1200px-BRI_Logo.svg.png" class="bank-logo" alt="BRI">
+                <img src="https://github.com/Kusuma-Invitation/test-page/blob/main/1.png?raw=true" class="bank-logo" alt="BRI">
                 <span class="rekening">0021234567890</span>
-                <p>a/n Trimono</p>
+                <p>Trimono</p>
                 <span class="salin-hint">Klik untuk salin nomor</span>
             </div>
-
-            <!-- BCA Card -->
+            <!-- BCA -->
             <div class="gift-card" onclick="copyToClipboard('8221234567', 'BCA')">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Bank_Central_Asia.svg/1200px-Bank_Central_Asia.svg.png" class="bank-logo" alt="BCA">
+                <img src="https://github.com/Kusuma-Invitation/test-page/blob/main/2.png?raw=true" class="bank-logo" alt="BCA">
                 <span class="rekening">8221234567</span>
                 <p>a/n Puji Rahayu</p>
                 <span class="salin-hint">Klik untuk salin nomor</span>
@@ -161,13 +161,11 @@
         </div>
     </section>
 
-    <!-- Halaman 10: Closing -->
     <section><video loop playsinline muted class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%2010.mp4" type="video/mp4"></video></section>
 
 </div>
 
 <script>
-    // Firebase Config (Data Anda)
     const firebaseConfig = {
         apiKey: "AIzaSyAZWfcVAeChQxDY4eKIyJd_CfTE3MV2rGE",
         authDomain: "kusuma-invitation.firebaseapp.com",
@@ -182,19 +180,16 @@
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
 
-    // Fungsi Salin Rekening
     function copyToClipboard(number, bank) {
         navigator.clipboard.writeText(number).then(() => {
             alert("Nomor Rekening " + bank + " berhasil disalin!");
         });
     }
 
-    // Ambil Nama Tamu
     const urlParams = new URLSearchParams(window.location.search);
     const namaTamu = urlParams.get('to') || "Tamu Undangan";
     document.getElementById('namaTamu').innerText = namaTamu;
 
-    // Logika Firebase Buku Tamu
     function simpanKomentar() {
         const status = document.getElementById('statusHadir').value;
         const pesan = document.getElementById('ucapan').value;
@@ -217,7 +212,6 @@
 
     function hapusKomentar(id) { if(confirm("Hapus ucapan?")) database.ref('komentar/' + id).remove(); }
 
-    // Navigasi & Audio
     const container = document.getElementById('mainContainer');
     const audio = document.getElementById('musikLatar');
     container.style.overflowY = 'hidden';
@@ -235,7 +229,6 @@
         });
     });
 
-    // Countdown
     const weddingDate = new Date("May 28, 2026 09:00:00").getTime();
     setInterval(() => {
         const d = weddingDate - new Date().getTime();
