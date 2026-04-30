@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kusuma Invitation</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body, html { height: 100%; font-family: 'Arial', sans-serif; background: #000; color: white; overflow: hidden; }
+
+        .container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+
+        section {
+            height: 100vh;
+            width: 100%;
+            scroll-snap-align: start;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        video {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 2;
+        }
+
+        .content { position: relative; z-index: 3; padding: 20px; width: 100%; max-width: 400px; }
+
+        .btn {
+            background: #d4af37; color: white; padding: 12px 25px;
+            border: none; border-radius: 50px; cursor: pointer;
+            font-weight: bold; text-decoration: none; display: inline-block;
+        }
+
+        #namaTamu { font-size: 2.2rem; color: #f1c40f; margin-top: 10px; }
+
+        input, textarea, select {
+            width: 100%; padding: 10px; margin: 5px 0;
+            border-radius: 8px; border: none; background: rgba(255,255,255,0.9);
+            font-family: inherit;
+        }
+
+        .bank-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .copy-btn {
+            background: #fff; color: #000; font-size: 0.8rem;
+            padding: 5px 10px; border-radius: 5px; cursor: pointer; margin-top: 5px;
+            border: none;
+        }
+
+        #halaman1 { background: #111; z-index: 10; }
+    </style>
+</head>
+<body>
+
+<audio id="musikLatar" loop><source src="Lestari.mp3" type="audio/mpeg"></audio>
+
+<div class="container" id="mainContainer">
+    
+    <!-- HALAMAN 1 -->
+    <section id="halaman1">
+        <div class="content">
+            <h1>Trimono & Puji</h1>
+            <button class="btn" onclick="mulaiUndangan()" style="margin-top:20px;">BUKA UNDANGAN</button>
+        </div>
+    </section>
+
+    <!-- HALAMAN 2 -->
+    <section>
+        <video loop playsinline muted class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%202.mp4" type="video/mp4"></video>
+        <div class="overlay"></div>
+        <div class="content"><p>Kepada Yth:</p><h2 id="namaTamu">Nama Tamu</h2></div>
+    </section>
+
+    <!-- HALAMAN 3-7 -->
+    <section><video loop playsinline muted class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%203.mp4" type="video/mp4"></video><div class="overlay"></div></section>
+    <section><video loop playsinline muted class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%204.mp4" type="video/mp4"></video><div class="overlay"></div></section>
+    <section><video loop playsinline muted class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%205.mp4" type="video/mp4"></video><div class="overlay"></div></section>
+    <section><video loop playsinline muted class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%206.mp4" type="video/mp4"></video><div class="overlay"></div></section>
+    <section><video loop playsinline muted class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%207.mp4" type="video/mp4"></video><div class="overlay"></div></section>
+
+    <!-- HALAMAN 8: KEHADIRAN & UCAPAN -->
+    <section>
+        <video loop playsinline muted class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%208.mp4" type="video/mp4"></video>
+        <div class="overlay"></div>
+        <div class="content">
+            <h3>Konfirmasi Kehadiran</h3>
+            <input type="text" id="inputNama" placeholder="Nama Anda">
+            <select id="statusHadir">
+                <option value="Hadir">Hadir</option>
+                <option value="Tidak Hadir">Tidak Hadir</option>
+            </select>
+            <textarea id="ucapan" placeholder="Berikan ucapan & doa restu..."></textarea>
+            <button class="btn" onclick="kirimRSVP()">KIRIM UCAPAN</button>
+        </div>
+    </section>
+
+    <!-- HALAMAN 9: WEDDING GIFT -->
+    <section>
+        <video loop playsinline muted class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%209.mp4" type="video/mp4"></video>
+        <div class="overlay"></div>
+        <div class="content">
+            <h3>Wedding Gift</h3>
+            <div class="bank-card">
+                <p>Bank BCA</p>
+                <p id="noRek">1234567890</p>
+                <p>a/n Kusuma</p>
+                <button class="copy-btn" onclick="copyRek()">Salin Nomor Rekening</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- HALAMAN 10 (VIDEO ONLY) -->
+    <section>
+        <video loop playsinline muted class="bg-vid"><source src="https://raw.githubusercontent.com/Kusuma-Invitation/test-page/main/halaman%2010.mp4" type="video/mp4"></video>
+        <div class="overlay"></div>
+        <!-- Teks dihapus sesuai permintaan -->
+    </section>
+
+</div>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    document.getElementById('namaTamu').innerText = urlParams.get('to') || "Tamu Undangan";
+
+    const container = document.getElementById('mainContainer');
+    const videos = document.querySelectorAll('.bg-vid');
+    const audio = document.getElementById('musikLatar');
+
+    container.style.overflowY = 'hidden';
+
+    function mulaiUndangan() {
+        container.style.overflowY = 'scroll';
+        audio.play().catch(e => console.log("Audio play diblokir:", e));
+        container.children[1].scrollIntoView({ behavior: 'smooth' });
+        checkVideos();
+    }
+
+    function checkVideos() {
+        videos.forEach(v => {
+            const pos = v.getBoundingClientRect();
+            if(pos.top < window.innerHeight && pos.bottom > 0) v.play();
+            else v.pause();
+        });
+    }
+
+    function copyRek() {
+        const rek = document.getElementById('noRek').innerText;
+        navigator.clipboard.writeText(rek);
+        alert("Nomor rekening berhasil disalin!");
+    }
+
+    function kirimRSVP() {
+        const nama = document.getElementById('inputNama').value;
+        const status = document.getElementById('statusHadir').value;
+        const pesan = document.getElementById('ucapan').value;
+        const waText = `Halo, saya ${nama}. Saya akan ${status}. %0A%0AUcapan: ${pesan}`;
+        window.open(`https://wa.me/628123456789?text=${waText}`, '_blank');
+    }
+
+    container.addEventListener('scroll', checkVideos);
+</script>
+
+</body>
+</html>
